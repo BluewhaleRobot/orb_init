@@ -1,20 +1,26 @@
 # orb_init
 ORB_SLAM  automatic initalization。When this node started,xiaoqiang first will move arround and force ORB_SLAM get tracked.Then xiaoqiang continue to move two circles (2*2 meters^2 free space needed )in order to cause a  Loop Closing。Finally，we would get the scaled visual odometry.
 
-input topic:
-/system_monitor/report
-/ORB_SLAM/Camera
+##input topic: 
+	/system_monitor/report
 
-output topic:
-/orb_scale/scaleStatus  (1hz)
-/ORB_SLAM/Odom          (visual odometry)
-/cmd_vel  (occasionally)
+	/ORB_SLAM/Camera
 
-output tf:
-odom_combined-->/base_footprint
-base_link-->camera
+	/xqserial_server/Pose2D
 
-Quickstart：
+##output topic: 
+	/orb_scale/scaleStatus  (1hz)
+
+	/ORB_SLAM/Odom          (visual odometry)
+
+	/cmd_vel  (occasionally)
+
+##output tf: 
+	odom_combined-->/base_footprint
+	
+	base_link-->camera
+
+##Quickstart：
 rosrun orb_init orb_scale.py 
 
 Made with :heart: by BlueWhale Tech corp.
