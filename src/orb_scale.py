@@ -304,13 +304,24 @@ def cameraOdom(campose):
                              0.,0.,0.,999.,0.,0.,
                              0.,0.,0.,0.,999.,0.,
                              0.,0.,0.,0.,0.,var_angle]
-    #publish tf:/odom_combined-->/base_footprint
+    # #publish tf:/odom_combined-->/base_footprint
+    # if odom_combined_tf != None:
+    #     T=Tbc
+    #     odom_combined_tf.sendTransform(T,q,
+    #         now,
+    #         "/odom_combined",
+    #         "/base_footprint")
+
+    #publish /base_footprint-->/odom_combined
     if odom_combined_tf != None:
-        T=Tbc
+        Rcb=Rbc.T
+        T=-Rcb*Tbc
+        M[:3,:3]=Rcb
+        q=tf.transformations.quaternion_from_matrix(M)
         odom_combined_tf.sendTransform(T,q,
             now,
-            "/odom_combined",
-            "/base_footprint")
+            "/base_footprint",
+            "/odom_combined")
     #计算速度
     camOdom.child_frame_id = "/base_footprint"
 
