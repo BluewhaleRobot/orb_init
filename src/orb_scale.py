@@ -304,24 +304,26 @@ def cameraOdom(campose):
                              0.,0.,0.,999.,0.,0.,
                              0.,0.,0.,0.,999.,0.,
                              0.,0.,0.,0.,0.,var_angle]
+    now=rospy.Time.now();
     # #publish tf:/odom_combined-->/base_footprint
     # if odom_combined_tf != None:
     #     T=Tbc
     #     odom_combined_tf.sendTransform(T,q,
     #         now,
-    #         "/odom_combined",
-    #         "/base_footprint")
+    #         "/base_footprint",
+    #         "/odom_combined")
 
     #publish /base_footprint-->/odom_combined
     if odom_combined_tf != None:
         Rcb=Rbc.T
-        T=-Rcb*Tbc
+        T=-Rcb.dot(Tbc)
+        M=np.identity(4)
         M[:3,:3]=Rcb
         q=tf.transformations.quaternion_from_matrix(M)
         odom_combined_tf.sendTransform(T,q,
             now,
-            "/base_footprint",
-            "/odom_combined")
+            "/odom_combined",
+            "/base_footprint")
     #计算速度
     camOdom.child_frame_id = "/base_footprint"
 
